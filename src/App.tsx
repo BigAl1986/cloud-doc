@@ -8,7 +8,10 @@ function App() {
     <div className="App container-fluid">
       <div className="row">
         <div className="col-3 bg-light left-panel">
-          <FileSearch title="我的云文件" onFileSearch={() => {}} />
+          <FileSearch
+            title="我的云文件"
+            onFileSearch={(value: string) => console.log(value)}
+          />
         </div>
         <div className="col-9 bg-primary right-panel">right</div>
       </div>

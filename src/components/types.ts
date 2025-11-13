@@ -1,4 +1,4 @@
 export interface FileSearchProps {
   title: string;
-  onFileSearch: () => void;
+  onFileSearch: (value: string) => void;
 }
