@@ -4,11 +4,6 @@
   color: inherit;
 }
 
-.left-panel, .right-panel {
-  height: 48px;
-}
-
 .file-search {
-  height: 100%;
-  margin-bottom: 0;
+  height: 48px;
 }

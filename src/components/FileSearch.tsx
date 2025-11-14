@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FileSearchProps } from "./types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useKeyPress } from "../hooks/useKeyPress";
 
 export default function FileSearch(props: FileSearchProps) {
   const [active, setActive] = useState<boolean>(false);
@@ -9,35 +10,36 @@ export default function FileSearch(props: FileSearchProps) {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const closeInput = (
-    e: KeyboardEvent | React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  const closeInput = () => {
     setActive(false);
     setValue("");
   };
+  const enterPressed = useKeyPress("Enter");
+  const escPressed = useKeyPress("Escape");
 
   useEffect(() => {
     if (active) inputRef.current?.focus();
   }, [active]);
 
   useEffect(() => {
-    const handleInputKeyup = (e: KeyboardEvent) => {
-      const { key } = e;
-      if (key === "Enter" && active) {
-        props.onFileSearch?.(value);
-      } else if (key === "Escape" && active) {
-        closeInput(e);
-      }
-    };
-    document.addEventListener("keyup", handleInputKeyup);
-    return () => {
-      document.removeEventListener("keyup", handleInputKeyup);
-    };
+    if (enterPressed && active) props.onFileSearch(value);
+    if (escPressed && active) closeInput();
+    // const handleInputKeyup = (e: KeyboardEvent) => {
+    //   const { key } = e;
+    //   if (key === "Enter" && active) {
+    //     props.onFileSearch?.(value);
+    //   } else if (key === "Escape" && active) {
+    //     closeInput(e);
+    //   }
+    // };
+    // document.addEventListener("keyup", handleInputKeyup);
+    // return () => {
+    //   document.removeEventListener("keyup", handleInputKeyup);
+    // };
   });
 
   return (
-    <div className="alert alert-primary d-flex justify-content-between align-items-center file-search">
+    <div className="alert alert-primary d-flex justify-content-between align-items-center file-search mb-0">
       {active ? (
         <>
           <input
@@ -46,7 +48,7 @@ export default function FileSearch(props: FileSearchProps) {
             ref={inputRef}
             onChange={(e) => setValue(e.target.value)}
           />
-          <button type="button" className="btn-icon" onClick={closeInput}>
+          <button type="button" className="btn-icon ms-2" onClick={closeInput}>
             <FontAwesomeIcon icon={faTimes} title="关闭" />
           </button>
         </>
