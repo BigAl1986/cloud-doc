@@ -16,3 +16,11 @@ export interface FileListProps {
   fileEdit: (id: string, name: string) => void;
   fileDelete: (id: string) => void;
 }
+
+export interface TabListProps {
+  files: File[];
+  activeId: string;
+  unsaveIds?: string[];
+  onTabClick: (id: string) => void;
+  onTabClose: (id: string) => void;
+}

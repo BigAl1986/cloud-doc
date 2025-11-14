@@ -65,7 +65,7 @@ export default function FileList({
                   <FontAwesomeIcon icon={faMarkdown} />
                 </span>
                 <span
-                  className="flex-grow-1"
+                  className="flex-grow-1 cursor-pointer"
                   onClick={() => fileClick(file.id)}
                 >
                   {file.title}

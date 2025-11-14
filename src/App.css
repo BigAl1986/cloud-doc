@@ -4,6 +4,10 @@
   color: inherit;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .file-search {
   height: 48px;
 }

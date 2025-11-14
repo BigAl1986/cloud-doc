@@ -6,11 +6,12 @@ import FileList from "./components/FileList";
 import defaultList from "./utils/defaultList.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport, faPlus } from "@fortawesome/free-solid-svg-icons";
+import TabList from "./components/TabList";
 
 function App() {
   return (
-    <div className="App container-fluid">
-      <div className="row no-gutters">
+    <div className="App container-fluid px-0">
+      <div className="row g-0">
         <div className="col-3 bg-light left-panel px-0">
           <FileSearch
             title="我的云文件"
@@ -22,8 +23,8 @@ function App() {
             fileEdit={(id, name) => console.log(id, name)}
             fileDelete={(id) => console.log("delete", id)}
           />
-          <div className="row no-gutters">
-            <div className="col px-0 d-grid">
+          <div className="row g-0">
+            <div className="col d-grid">
               <button
                 type="button"
                 className="btn-primary btn no-border"
@@ -33,7 +34,7 @@ function App() {
                 新增
               </button>
             </div>
-            <div className="col px-0 d-grid">
+            <div className="col d-grid">
               <button
                 type="button"
                 className="btn-success btn no-border"
@@ -45,7 +46,15 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="col-9 bg-primary right-panel">right</div>
+        <div className="col-9 bg-light right-panel">
+          <TabList
+            files={defaultList}
+            activeId="0"
+            unsaveIds={["0", "1"]}
+            onTabClick={(id) => console.log("click", id)}
+            onTabClose={(id) => console.log("close", id)}
+          />
+        </div>
       </div>
     </div>
   );
