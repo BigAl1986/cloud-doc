@@ -12,37 +12,42 @@ import FileList from "./components/FileList";
 import TabList from "./components/TabList";
 import SimpleMde from "react-simplemde-editor";
 import { v4 } from "uuid";
+import { flattenArr, reverseFlattern } from "./utils/helper";
 
 function App() {
-  const [files, setFiles] = useState<MarkdownFile[]>(defaultList);
+  const [files, setFiles] = useState<{ [key: string]: MarkdownFile }>(
+    flattenArr(defaultList)
+  );
+  const filesArr = reverseFlattern(files);
 
   const [activeFileId, setActiveFileId] = useState<string>("");
-  const activeFile = files.find((file) => file.id === activeFileId);
+  const activeFile = files[activeFileId];
 
   const [openFileIds, setOpenFileIds] = useState<string[]>([]);
   const openFiles = openFileIds.map((id) => {
-    return files.find((file) => file.id === id) as MarkdownFile;
+    return files[id];
   });
 
   const [unsavedFileIds, setUnsavedFileIds] = useState<string[]>([]);
 
   const [searchedFiles, setSearchedFiles] = useState<MarkdownFile[]>([]);
-  const [addingFiles, setAddingFiles] = useState<MarkdownFile[]>([]);
-  const showFiles = searchedFiles.length ? searchedFiles : files;
+  const showFiles = searchedFiles.length ? searchedFiles : filesArr;
+
+  const [addingFiles, setAddingFiles] = useState<{
+    [key: string]: MarkdownFile;
+  }>({});
+  const addingFilesArr = reverseFlattern(addingFiles);
 
   const updateFile = (
     id: string,
     key: "title" | "body",
     value: string
-  ): MarkdownFile[] => {
-    return files.map((file) => {
-      if (file.id === id) file[key] = value;
-      return file;
-    });
+  ): MarkdownFile => {
+    return { ...files[id], [key]: value };
   };
 
   const handleEdit = (id: string, value: string) => {
-    setFiles(updateFile(id, "body", value));
+    setFiles({ ...files, [id]: updateFile(id, "title", value) });
 
     if (!unsavedFileIds.includes(id))
       setUnsavedFileIds([...unsavedFileIds, id]);
@@ -66,14 +71,19 @@ function App() {
   };
 
   const handleFinish = (name: string) => {
-    name && setFiles([...files, { ...addingFiles[0], title: name }]);
-    setAddingFiles([]);
+    name &&
+      setFiles({
+        ...files,
+        [addingFilesArr[0].id]: { ...addingFilesArr[0], title: name },
+      });
+    setAddingFiles({});
   };
 
   const handleDelete = (id: string) => {
     handleClose(id);
 
-    setFiles(files.filter((file) => file.id !== id));
+    delete files[id];
+    setFiles(files);
   };
 
   return (
@@ -84,32 +94,35 @@ function App() {
             title="我的云文件"
             onFileSearch={(value: string) =>
               setSearchedFiles(
-                files.filter((file) => file.title.includes(value))
+                filesArr.filter((file) => file.title.includes(value))
               )
             }
           />
           <FileList
             files={showFiles}
             fileClick={handleTitleClick}
-            rename={(id, name) => setFiles(updateFile(id, "title", name))}
+            rename={(id, name) => {
+              setFiles({ ...files, [id]: updateFile(id, "title", name) });
+            }}
             fileDelete={handleDelete}
           />
           {/* 这里的第二个 FileList 组件就等于经典的 CRUD 构型中的【添加、编辑对话框】*/}
-          <FileList files={addingFiles} adding onFinish={handleFinish} />
+          <FileList files={addingFilesArr} adding onFinish={handleFinish} />
           <div className="row g-0 button-group">
             <div className="col d-grid">
               <button
                 type="button"
                 className="btn-primary btn no-border"
                 onClick={() => {
-                  setAddingFiles([
-                    {
-                      id: v4(),
+                  const newId = v4();
+                  setAddingFiles({
+                    newId: {
+                      id: newId,
                       title: "",
                       body: "",
                       createAt: new Date().getTime(),
                     },
-                  ]);
+                  });
                 }}
               >
                 <FontAwesomeIcon icon={faPlus} className="me-2" />
