@@ -65,7 +65,7 @@ function App() {
     }
   };
 
-  const handleAdd = (name: string) => {
+  const handleFinish = (name: string) => {
     name && setFiles([...files, { ...addingFiles[0], title: name }]);
     setAddingFiles([]);
   };
@@ -94,7 +94,8 @@ function App() {
             rename={(id, name) => setFiles(updateFile(id, "title", name))}
             fileDelete={handleDelete}
           />
-          <FileList files={addingFiles} adding fileAdd={handleAdd} />
+          {/* 这里的第二个 FileList 组件就等于经典的 CRUD 构型中的【添加、编辑对话框】*/}
+          <FileList files={addingFiles} adding onFinish={handleFinish} />
           <div className="row g-0 button-group">
             <div className="col d-grid">
               <button

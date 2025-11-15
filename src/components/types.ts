@@ -13,7 +13,7 @@ export interface MarkdownFile {
 export interface FileListProps {
   files: MarkdownFile[];
   adding?: boolean;
-  fileAdd?: (name: string) => void;
+  onFinish?: (name: string) => void;
   fileClick?: (id: string) => void;
   rename?: (id: string, name: string) => void;
   fileDelete?: (id: string) => void;

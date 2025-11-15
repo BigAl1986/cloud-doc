@@ -8,7 +8,7 @@ import { useKeyPress } from "../hooks/useKeyPress";
 export default function FileList({
   files,
   adding = false,
-  fileAdd,
+  onFinish,
   fileClick,
   rename,
   fileDelete,
@@ -25,15 +25,15 @@ export default function FileList({
 
   useEffect(() => {
     if (enterPressed && editingId && editingName.trim() !== "") {
-      if (adding && fileAdd) {
-        fileAdd(editingName);
+      if (adding && onFinish) {
+        onFinish(editingName);
       } else {
         rename && rename(editingId, editingName);
       }
       closeInput();
     }
     if (escPressed && editingId) {
-      if (adding && fileAdd) fileAdd("");
+      if (adding && onFinish) onFinish("");
       closeInput();
     }
   });
@@ -60,7 +60,7 @@ export default function FileList({
                   type="button"
                   className="btn-icon ms-2"
                   onClick={() => {
-                    if (adding && fileAdd) fileAdd("");
+                    if (adding && onFinish) onFinish("");
                     closeInput();
                   }}
                 >
