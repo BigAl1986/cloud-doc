@@ -2,16 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Use [electron](https://electron.nodejs.cn/) to build cross-platform desktop apps
+
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Electron will build a development app base on chromium.
 
-The page will reload if you make edits.\
+The app will reload if you make edits.\
 You will also see any lint errors in the console.
 
 ### `npm test`
