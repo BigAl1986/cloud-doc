@@ -3,7 +3,7 @@ export interface FileSearchProps {
   onFileSearch: (value: string) => void;
 }
 
-export interface File {
+export interface MarkdownFile {
   id: string;
   title: string;
   body: string;
@@ -11,14 +11,14 @@ export interface File {
 }
 
 export interface FileListProps {
-  files: File[];
+  files: MarkdownFile[];
   fileClick: (id: string) => void;
-  fileEdit: (id: string, name: string) => void;
+  rename: (id: string, name: string) => void;
   fileDelete: (id: string) => void;
 }
 
 export interface TabListProps {
-  files: File[];
+  files: MarkdownFile[];
   activeId: string;
   unsaveIds?: string[];
   onTabClick: (id: string) => void;

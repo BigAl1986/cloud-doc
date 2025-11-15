@@ -8,7 +8,7 @@ import { useKeyPress } from "../hooks/useKeyPress";
 export default function FileList({
   files,
   fileClick,
-  fileEdit,
+  rename,
   fileDelete,
 }: FileListProps) {
   const [editingId, setEditingId] = useState<string>("");
@@ -22,12 +22,15 @@ export default function FileList({
   const escPressed = useKeyPress("Escape");
 
   useEffect(() => {
-    if (enterPressed && editingId) fileEdit(editingId, editingName);
+    if (enterPressed && editingId) {
+      rename(editingId, editingName);
+      closeInput();
+    }
     if (escPressed && editingId) closeInput();
     // const handleInputKeyup = (e: KeyboardEvent) => {
     //   const { key } = e;
     //   if (key === "Enter" && editingId) {
-    //     fileEdit(editingId, editingName);
+    //     rename(editingId, editingName);
     //     closeInput(e);
     //   } else if (key === "Escape" && editingId) {
     //     closeInput(e);

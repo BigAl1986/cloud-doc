@@ -12,6 +12,14 @@ export default function TabList({
   onTabClick,
   onTabClose,
 }: TabListProps) {
+  const handleClose = (
+    e: React.MouseEvent<SVGSVGElement, MouseEvent>,
+    id: string
+  ) => {
+    e.stopPropagation();
+    onTabClose(id);
+  };
+
   return (
     <ul className="nav nav-pills tab-list">
       {files.map((file) => {
@@ -22,13 +30,18 @@ export default function TabList({
           unsaved,
         });
         return (
-          <li className="nav-item" key={file.id}>
+          <li
+            className="nav-item"
+            key={file.id}
+            onClick={() => onTabClick(file.id)}
+          >
             <a href="#" className={finalClassNames}>
               {file.title}
               <FontAwesomeIcon
                 icon={faTimes}
                 title="删除"
                 className="ms-2 close-icon"
+                onClick={(e) => handleClose(e, file.id)}
               />
               {unsaved && (
                 <span className="rounded-circle unsaved-icon ms-2"></span>

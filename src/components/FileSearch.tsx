@@ -13,6 +13,7 @@ export default function FileSearch(props: FileSearchProps) {
   const closeInput = () => {
     setActive(false);
     setValue("");
+    props.onFileSearch("");
   };
   const enterPressed = useKeyPress("Enter");
   const escPressed = useKeyPress("Escape");

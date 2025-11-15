@@ -1,3 +1,22 @@
+.left-panel {
+  height: 100vh;
+  position: relative;
+
+  .button-group {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+
+    .no-border {
+      border-radius: 0;
+    }
+  }
+
+  .file-search {
+    height: 48px;
+  }
+}
+
 .btn-icon {
   background: none;
   border: none;
@@ -8,6 +27,10 @@
   cursor: pointer;
 }
 
-.file-search {
-  height: 48px;
+.empty-text {
+  font-size: 30px;
+  height: 300px;
+  line-height: 300px;
+  color: #ccc;
+  text-align: center;
 }
