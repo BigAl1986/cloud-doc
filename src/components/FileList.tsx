@@ -7,6 +7,8 @@ import { useKeyPress } from "../hooks/useKeyPress";
 
 export default function FileList({
   files,
+  adding = false,
+  fileAdd,
   fileClick,
   rename,
   fileDelete,
@@ -22,25 +24,23 @@ export default function FileList({
   const escPressed = useKeyPress("Escape");
 
   useEffect(() => {
-    if (enterPressed && editingId) {
-      rename(editingId, editingName);
+    if (enterPressed && editingId && editingName.trim() !== "") {
+      if (adding && fileAdd) {
+        fileAdd(editingName);
+      } else {
+        rename(editingId, editingName);
+      }
       closeInput();
     }
-    if (escPressed && editingId) closeInput();
-    // const handleInputKeyup = (e: KeyboardEvent) => {
-    //   const { key } = e;
-    //   if (key === "Enter" && editingId) {
-    //     rename(editingId, editingName);
-    //     closeInput(e);
-    //   } else if (key === "Escape" && editingId) {
-    //     closeInput(e);
-    //   }
-    // };
-    // document.addEventListener("keyup", handleInputKeyup);
-    // return () => {
-    //   document.removeEventListener("keyup", handleInputKeyup);
-    // };
+    if (escPressed && editingId) {
+      if (adding && fileAdd) fileAdd("");
+      closeInput();
+    }
   });
+
+  useEffect(() => {
+    adding && files.length && setEditingId(files[0].id);
+  }, [adding, files]);
 
   return (
     <ul className="list-group list-group-flush">
@@ -50,14 +50,19 @@ export default function FileList({
             {file.id === editingId ? (
               <>
                 <input
+                  autoFocus
                   className="form-control"
                   value={editingName}
+                  placeholder="请输入文件名"
                   onChange={(e) => setEditingName(e.target.value)}
                 />
                 <button
                   type="button"
                   className="btn-icon ms-2"
-                  onClick={closeInput}
+                  onClick={() => {
+                    if (adding && fileAdd) fileAdd("");
+                    closeInput();
+                  }}
                 >
                   <FontAwesomeIcon icon={faTimes} title="关闭" />
                 </button>

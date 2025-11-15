@@ -11,6 +11,7 @@ import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import TabList from "./components/TabList";
 import SimpleMde from "react-simplemde-editor";
+import { v4 } from "uuid";
 
 function App() {
   const [files, setFiles] = useState<MarkdownFile[]>(defaultList);
@@ -26,6 +27,7 @@ function App() {
   const [unsavedFileIds, setUnsavedFileIds] = useState<string[]>([]);
 
   const [searchedFiles, setSearchedFiles] = useState<MarkdownFile[]>([]);
+  const [addingFiles, setAddingFiles] = useState<MarkdownFile[]>([]);
   const showFiles = searchedFiles.length ? searchedFiles : files;
 
   const updateFile = (
@@ -54,6 +56,11 @@ function App() {
     } else {
       setActiveFileId("");
     }
+  };
+
+  const handleAdd = (name: string) => {
+    name && setFiles([...files, { ...addingFiles[0], title: name }]);
+    setAddingFiles([]);
   };
 
   const handleDelete = (id: string) => {
@@ -85,12 +92,34 @@ function App() {
             rename={(id, name) => setFiles(updateFile(id, "title", name))}
             fileDelete={handleDelete}
           />
+          <FileList
+            files={addingFiles}
+            adding
+            fileClick={(id) => {
+              setActiveFileId(id);
+              if (!openFileIds.includes(id)) {
+                setOpenFileIds([...openFileIds, id]);
+              }
+            }}
+            rename={(id, name) => setFiles(updateFile(id, "title", name))}
+            fileAdd={handleAdd}
+            fileDelete={handleDelete}
+          />
           <div className="row g-0 button-group">
             <div className="col d-grid">
               <button
                 type="button"
                 className="btn-primary btn no-border"
-                onClick={() => {}}
+                onClick={() => {
+                  setAddingFiles([
+                    {
+                      id: v4(),
+                      title: "",
+                      body: "",
+                      createAt: new Date().getTime(),
+                    },
+                  ]);
+                }}
               >
                 <FontAwesomeIcon icon={faPlus} className="me-2" />
                 新增
