@@ -28,7 +28,7 @@ export default function FileList({
       if (adding && fileAdd) {
         fileAdd(editingName);
       } else {
-        rename(editingId, editingName);
+        rename && rename(editingId, editingName);
       }
       closeInput();
     }
@@ -74,7 +74,7 @@ export default function FileList({
                 </span>
                 <span
                   className="flex-grow-1 cursor-pointer"
-                  onClick={() => fileClick(file.id)}
+                  onClick={() => fileClick && fileClick(file.id)}
                 >
                   {file.title}
                 </span>
@@ -91,7 +91,7 @@ export default function FileList({
                 <button
                   type="button"
                   className="btn-icon px-0"
-                  onClick={() => fileDelete(file.id)}
+                  onClick={() => fileDelete && fileDelete(file.id)}
                 >
                   <FontAwesomeIcon icon={faTrash} title="删除" />
                 </button>

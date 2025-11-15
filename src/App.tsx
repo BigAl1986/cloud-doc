@@ -58,6 +58,13 @@ function App() {
     }
   };
 
+  const handleTitleClick = (id: string) => {
+    setActiveFileId(id);
+    if (!openFileIds.includes(id)) {
+      setOpenFileIds([...openFileIds, id]);
+    }
+  };
+
   const handleAdd = (name: string) => {
     name && setFiles([...files, { ...addingFiles[0], title: name }]);
     setAddingFiles([]);
@@ -83,28 +90,11 @@ function App() {
           />
           <FileList
             files={showFiles}
-            fileClick={(id) => {
-              setActiveFileId(id);
-              if (!openFileIds.includes(id)) {
-                setOpenFileIds([...openFileIds, id]);
-              }
-            }}
+            fileClick={handleTitleClick}
             rename={(id, name) => setFiles(updateFile(id, "title", name))}
             fileDelete={handleDelete}
           />
-          <FileList
-            files={addingFiles}
-            adding
-            fileClick={(id) => {
-              setActiveFileId(id);
-              if (!openFileIds.includes(id)) {
-                setOpenFileIds([...openFileIds, id]);
-              }
-            }}
-            rename={(id, name) => setFiles(updateFile(id, "title", name))}
-            fileAdd={handleAdd}
-            fileDelete={handleDelete}
-          />
+          <FileList files={addingFiles} adding fileAdd={handleAdd} />
           <div className="row g-0 button-group">
             <div className="col d-grid">
               <button
