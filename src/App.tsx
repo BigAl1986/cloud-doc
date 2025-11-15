@@ -1,12 +1,15 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "easymde/dist/easymde.min.css";
+
 import FileSearch from "./components/FileSearch";
 import FileList from "./components/FileList";
 import defaultList from "./utils/defaultList.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport, faPlus } from "@fortawesome/free-solid-svg-icons";
 import TabList from "./components/TabList";
+import SimpleMdeReact from "react-simplemde-editor";
 
 function App() {
   return (
@@ -53,6 +56,13 @@ function App() {
             unsaveIds={["0", "1"]}
             onTabClick={(id) => console.log("click", id)}
             onTabClose={(id) => console.log("close", id)}
+          />
+          <SimpleMdeReact
+            value={defaultList[1].body}
+            onChange={(value) => console.log(value)}
+            options={{
+              minHeight: "460px",
+            }}
           />
         </div>
       </div>
